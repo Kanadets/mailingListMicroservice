@@ -155,7 +155,7 @@ func GetEmailBatch(db *sql.DB) http.Handler {
 		fromJson(req.Body, &queryOptions)
 
 		if queryOptions.Count <= 0 || queryOptions.Page <= 0 {
-			returnErr(w, errors.New("Page and Count fields are requered and must be > 0"), 400)
+			returnErr(w, errors.New("page and count fields are required and must be > 0"), 400)
 			return
 		}
 
@@ -172,6 +172,8 @@ func Serve(db *sql.DB, bind string) {
 	http.Handle("/email/get_batch", GetEmailBatch(db))
 	http.Handle("/email/update", UpdateEmail(db))
 	http.Handle("/email/delete", DeleteEmail(db))
+
+	log.Printf("JSON API serve listening on %v\n", bind)
 
 	err := http.ListenAndServe(bind, nil)
 
